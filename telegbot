@@ -1,0 +1,30 @@
+
+from telegram.ext import Updater, CommandHandler
+import requests
+import re
+
+def get_url():
+    contents = requests.get('https://random.dog/woof.json').json()
+    url = contents['url']
+    return url
+    
+def bop(bot, update):
+    url = get_url()
+    chat_id = update.message.chat_id
+    bot.send_photo(chat_id=chat_id, photo=url)
+    
+req={'proxy_url': 'socks5h://166.62.85.161:47693/', 'urllib3_proxy_kwargs': {
+    #'assert_hostname': 'False', 
+    #'cert_reqs': 'CERT_NONE'
+    #'username': '257993385',
+    #'password': 'MWHiAwRN'
+}}
+
+def main():
+    updater = Updater(token='917482650:AAFdM8AFdJK2aMLxDG5Hox06pSEV3_Pv3uw', request_kwargs=req)
+    dp = updater.dispatcher
+    dp.add_handler(CommandHandler('bop',bop))
+    updater.start_polling()
+    updater.idle()
+    
+ main()
